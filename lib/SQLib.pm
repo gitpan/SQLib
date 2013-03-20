@@ -6,13 +6,14 @@ SQLib - A simple module to manage and store SQL queries in separate files.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =head1 AUTHOR
 
 Mateusz Szczyrzyca, mateusz at szczyrzyca.pl
 
 =head1 SYNOPSIS
+
 The module allows to store SQL queries in separate files and provides easy 
 access to them.
 
@@ -26,7 +27,7 @@ A file with list of queries has the following syntax:
  -- A SQL query {vars} to interpolate
  [/NAME_OF_QUERY2]
 
-
+ ...
 
  [NAME_OF_QUERY_N]
  -- A SQL query with {vars} to interpolate
@@ -37,25 +38,24 @@ same [NAME], then only one (first) will be used.
 If a query with a specified name doesn't exist then undef is returned.
 
 Simple example:
-*file_with_queries contains:
 
-[CHECK_PASSWORD]
--- Comments for SQL debug
--- Some::Program @ CHECK_PASSWORD
--- Check a user password
-SELECT
- login,password
-FROM
- {table}
-WHERE
-(
-  login = '{login}',
- AND
-  password = '{password}'
-);
-[/CHECK_PASSWORD]
+ [CHECK_PASSWORD]
+ -- Comments for SQL debug
+ -- Some::Program @ CHECK_PASSWORD
+ -- Check a user password
+ SELECT
+  login,password
+ FROM
+  {table}
+ WHERE
+ (
+   login = '{login}',
+  AND
+   password = '{password}'
+ );
+ [/CHECK_PASSWORD]
 
-And usage of it in a perl code:
+And how to use it in a perl code:
 
  use SQLib;
  my $SQLib = SQLib->new( './file_with_queries.sql' );
@@ -70,6 +70,7 @@ And usage of it in a perl code:
  my $check_auth_query = $SQLib->get_query( 'CHECK_PASSWORD', \%sql_params );
 
 In the above example $check_auth_query contains:
+
  -- Comments for SQL debug
  -- Some::Program @ CHECK_PASSWORD
  -- Check a user password
@@ -94,7 +95,7 @@ package SQLib;
 use utf8;
 use strict;
 use Tie::File;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub new
 {

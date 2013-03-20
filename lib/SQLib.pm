@@ -6,7 +6,7 @@ SQLib - A simple module to manage and store SQL queries in separate files.
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =head1 AUTHOR
 
@@ -21,6 +21,7 @@ A file with list of queries has the following syntax:
 
  [NAME_OF_QUERY1]
  -- A SQL query with {vars} to interpolate
+ -- Remember that 
  [/NAME_OF_QUERY1]
 
  [NAME_OF_QUERY2]
@@ -33,9 +34,19 @@ A file with list of queries has the following syntax:
  -- A SQL query with {vars} to interpolate
  [/NAME_OF_QUERY_N]
 
-Empty lines are ignored. If there are two or more SQL queries with
-same [NAME], then only one (first) will be used.
-If a query with a specified name doesn't exist then undef is returned.
+ [     QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE ]
+                -- A SQL query with spaces
+ [     /   QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE     ]
+
+
+Empty lines between queries are ignored. If there are two or more SQL queries 
+with same [NAME], then only one (first) will be used. 
+
+If a query with a specified name doesn't exist then undef is returned as soon 
+as if a file or query has an invalid syntax.
+
+[QUERY_NAME]A sql code[/QUERY_NAME] is not valid as well.
+
 
 Simple example:
 
@@ -95,7 +106,7 @@ package SQLib;
 use utf8;
 use strict;
 use Tie::File;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new
 {
@@ -123,9 +134,9 @@ sub get_query
 
  for my $i ( 0 .. $#queries )
  {
-  last if ( $queries[ $i ] =~ m/\s*\[*\s*$name\s*\]\s*/ && $reading );
-
-  next if ( $queries[ $i ] =~ m/^\s*$/ );
+  last if ( $queries[ $i ] =~ m/^\[\s*\/\s*$name\s*\]$/ );
+  next if ( $queries[ $i ] =~ m/^\s*$/ && !$reading );
+  return undef if $reading && $queries[ $i ] =~ m/^\[/;
 
   if ( $reading )
   {
@@ -133,12 +144,13 @@ sub get_query
    next;
   }
 
-  if ( $queries[ $i ] =~ m/\s*\[\s*$name\s*\]\s*/ )
+  if ( $queries[ $i ] =~ m/^\[\s*$name\s*\]\s*/ )
   {
    $reading = 1;
    next;
   }
  }
+
 
  ### The requested query doesn't exist
  return undef if !$reading;
@@ -151,8 +163,8 @@ sub get_query
   $sql =~ s/\{$key\}/$tmp/g;
  }
 
- $sql =~ s/\s*[a-z0-9_]+\s*\=\s*\'*\{[A-Za-z0-9_]+\}\'*\,*\s*/\n/g;
- $sql =~ s/\,+(?:\s*|\n*)WHERE/\nWHERE/ig;
+# $sql =~ s/\s*[a-z0-9_]+\s*\=\s*\'*\{[A-Za-z0-9_]+\}\'*\,*\s*/\n/g;
+# $sql =~ s/\,+(?:\s*|\n*)WHERE/\nWHERE/ig;
 
  return $sql;
 };

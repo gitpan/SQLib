@@ -1,5 +1,8 @@
 Revision history for SQLib
 
+0.03    20-03-2013
+        Bugfixes and more tests were added.
+
 0.02    20-03-2013
         Some the POD notation fixes.
 

@@ -1,10 +1,10 @@
 --- #YAML:1.0
 name:               SQLib
-version:            0.02
+version:            0.04
 abstract:           A simple module to manage and store SQL queries in separate files.
 author:
     - Mateusz Szczyrzyca <mateusz@szczyrzyca.pl>
-license:            Artistic_2_0
+license:            perl
 distribution_type:  module
 configure_requires:
     ExtUtils::MakeMaker:  0

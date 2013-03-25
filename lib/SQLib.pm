@@ -6,7 +6,7 @@ SQLib - A simple module to manage and store SQL queries in separate files.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =head1 AUTHOR
 
@@ -15,29 +15,30 @@ Mateusz Szczyrzyca, mateusz at szczyrzyca.pl
 =head1 SYNOPSIS
 
 The module allows to store SQL queries in separate files and provides easy 
-access to them.
+access to them. This functionality is helpful if you want to separate a Perl 
+code from a SQL code.
 
 A file with list of queries has the following syntax:
 
  [NAME_OF_QUERY1]
- -- A SQL query with {vars} to interpolate
- -- Remember that 
+ -- A SQL query with {vars} to replace 
  [/NAME_OF_QUERY1]
 
  [NAME_OF_QUERY2]
- -- A SQL query {vars} to interpolate
+ -- A SQL query {vars} to replace
  [/NAME_OF_QUERY2]
 
  ...
 
  [NAME_OF_QUERY_N]
- -- A SQL query with {vars} to interpolate
+ -- A SQL query with {vars} to replace
  [/NAME_OF_QUERY_N]
 
- [     QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE ]
+ [     QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE  ]
                 -- A SQL query with spaces
- [     /   QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE     ]
+ [     /   QUERIES_WITH_SPACES_IN_NAME_ARE_POSSIBLE       ]
 
+First parenthesis "[" always starts from a new line (don't use whitespaces).
 
 Empty lines between queries are ignored. If there are two or more SQL queries 
 with same [NAME], then only one (first) will be used. 
@@ -45,10 +46,10 @@ with same [NAME], then only one (first) will be used.
 If a query with a specified name doesn't exist then undef is returned as soon 
 as if a file or query has an invalid syntax.
 
-[QUERY_NAME]A sql code[/QUERY_NAME] is not valid as well.
+[QUERY_NAME]A sql code[/QUERY_NAME] isn't a valid syntax as well.
 
 
-Simple example:
+Simple example (file_with_queries.sql):
 
  [CHECK_PASSWORD]
  -- Comments for SQL debug
@@ -106,7 +107,7 @@ package SQLib;
 use utf8;
 use strict;
 use Tie::File;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub new
 {

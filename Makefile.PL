@@ -8,7 +8,7 @@ WriteMakefile(
     AUTHOR           => q{Mateusz Szczyrzyca <mateusz@szczyrzyca.pl>},
     VERSION_FROM     => 'lib/SQLib.pm',
     ABSTRACT_FROM    => 'lib/SQLib.pm',
-    LICENSE          => 'Artistic_2_0',
+    LICENSE          => 'perl',
     PL_FILES         => {},
     MIN_PERL_VERSION => 5.006,
     CONFIGURE_REQUIRES => {

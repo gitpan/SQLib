@@ -1,5 +1,9 @@
 Revision history for SQLib
 
+0.05    04-02-2013
+        It looks like that I forgot to change the MANIFEST file (no tests were included until now).
+        Some small fixes.
+
 0.04    25-03-2013
         More tests.
 

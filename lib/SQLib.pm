@@ -6,7 +6,7 @@ SQLib - A simple module to manage and store SQL queries in separate files.
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =head1 AUTHOR
 
@@ -25,7 +25,7 @@ A file with list of queries has the following syntax:
  [/NAME_OF_QUERY1]
 
  [NAME_OF_QUERY2]
- -- A SQL query {vars} to replace
+ -- A SQL query with {vars} to replace
  [/NAME_OF_QUERY2]
 
  ...
@@ -107,7 +107,7 @@ package SQLib;
 use utf8;
 use strict;
 use Tie::File;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub new
 {
@@ -152,7 +152,6 @@ sub get_query
   }
  }
 
-
  ### The requested query doesn't exist
  return undef if !$reading;
 
@@ -163,9 +162,6 @@ sub get_query
   my $tmp = $hash{ $key };
   $sql =~ s/\{$key\}/$tmp/g;
  }
-
-# $sql =~ s/\s*[a-z0-9_]+\s*\=\s*\'*\{[A-Za-z0-9_]+\}\'*\,*\s*/\n/g;
-# $sql =~ s/\,+(?:\s*|\n*)WHERE/\nWHERE/ig;
 
  return $sql;
 };
